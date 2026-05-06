@@ -13,11 +13,11 @@ dedicated dashboard.
 
 ## 👥 Team Members
 
-| Name | Registration No |
-|------|----------------|
-| Sameer Rasheed | 24L-0941 |
-| Taha Mustafa | 24L-0961 |
-| Muhammad Hashim Riaz | 24L-0814 |
+| Name |
+|------|
+| Muhammad Ahmad Sajid |
+| Muhammad Taha |
+| Mohsin Saeed |
 
 **Course:** Database Systems
 **Semester:** Spring 2025
