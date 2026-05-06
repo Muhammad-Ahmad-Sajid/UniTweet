@@ -183,3 +183,24 @@ like, follow, feed, search, messaging, and reporting.
 
 This project was built for academic purposes as part of 
 the Database Systems course.
+
+1. requirements.txt
+Tells anyone who downloads your project exactly what to install.
+psycopg2-binary
+bcrypt
+Just create a file called requirements.txt and paste those 2 lines. Then anyone can run:
+pip install -r requirements.txt
+
+2. .gitignore
+Prevents accidentally uploading sensitive files to GitHub.
+__pycache__/
+*.pyc
+*.pyo
+.env
+db_config.py
+
+3. ER_Diagram
+
+
+4. Report.docx
+
