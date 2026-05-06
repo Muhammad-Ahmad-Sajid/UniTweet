@@ -199,8 +199,3 @@ __pycache__/
 .env
 db_config.py
 
-3. ER_Diagram
-
-
-4. Report.docx
-
