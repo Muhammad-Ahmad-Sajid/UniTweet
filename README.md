@@ -1,4 +1,4 @@
-# UniTweet 🐦
+# UniTweet 
 ### A University Social Media Platform
 
 UniTweet is a text-only social media platform built exclusively 
