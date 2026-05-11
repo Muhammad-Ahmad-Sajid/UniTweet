@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2.pool import SimpleConnectionPool
 import firebase
 
 db_config = {
@@ -9,9 +10,18 @@ db_config = {
     "password": "MohsinSajid@@"
 }
 
+_pool = None
+
+def get_pool():
+    """Lazily initialize and return a reusable connection pool."""
+    global _pool
+    if _pool is None:
+        _pool = SimpleConnectionPool(1, 10, **db_config)
+    return _pool
+
 def get_connection():
-    """Returns a new psycopg2 connection using db_config."""
-    return psycopg2.connect(**db_config)
+    """Returns a pooled psycopg2 connection."""
+    return get_pool().getconn()
 
 def execute_query(sql, params=None, fetch="all"):
     """Executes a query, manages connection lifecycle, and returns dictated structures safely."""
@@ -46,7 +56,7 @@ def execute_query(sql, params=None, fetch="all"):
         return []
     finally:
         if conn:
-            conn.close()
+            get_pool().putconn(conn)
 
 def register_user(reg_no, full_name, email, password_hash, batch_year, department):
     """Registers a new user in the database."""
