@@ -1,0 +1,4 @@
+bcrypt
+firebase-admin
+Pillow
+psycopg2-binary
