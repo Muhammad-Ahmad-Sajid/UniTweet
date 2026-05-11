@@ -134,22 +134,27 @@ class UniTweetApp(tk.Tk):
 class ScrollableFrame(tk.Frame):
     def __init__(self, container, *args, **kwargs):
         super().__init__(container, bg=BG_COLOR, *args, **kwargs)
-        canvas = tk.Canvas(self, bg=BG_COLOR, highlightthickness=0)
-        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
-        self.scrollable_frame = tk.Frame(canvas, bg=BG_COLOR)
+        self.canvas = tk.Canvas(self, bg=BG_COLOR, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas, bg=BG_COLOR)
 
         self.scrollable_frame.bind(
             "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
-        # Bind mousewheel scrolling
-        canvas.bind_all("<MouseWheel>", lambda e: canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
+        # Bind mousewheel scrolling only while cursor is inside this widget.
+        # Using bind_all per instance stacks handlers and causes lag over time.
+        self.scrollable_frame.bind("<Enter>", lambda _e: self.canvas.bind_all("<MouseWheel>", self._on_mousewheel))
+        self.scrollable_frame.bind("<Leave>", lambda _e: self.canvas.unbind_all("<MouseWheel>"))
 
-        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw", width=800)
-        canvas.configure(yscrollcommand=scrollbar.set)
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw", width=800)
+        self.canvas.configure(yscrollcommand=scrollbar.set)
 
-        canvas.pack(side="left", fill="both", expand=True)
+        self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+
+    def _on_mousewheel(self, event):
+        self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
 
 class LoginScreen(tk.Frame):
